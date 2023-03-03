@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:54:04 by ichouare          #+#    #+#             */
-/*   Updated: 2023/02/26 17:38:06 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/03/01 15:07:58 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,16 +86,19 @@ void	*test(void *vars)
 	while (1)
 	{
 		pthread_mutex_lock (&p->mutex[p->id]);
-		printmsg("%ld ms take the %d first fork \n", get_time(p), (p->id + 1));
+		printmsg("%ld ms take the %d first fork \n", get_time(p),
+			(p->id + 1), p->print);
 		pthread_mutex_lock (&p->mutex[(p->id + 1) % p->nthreads]);
-		printmsg("%ld ms take the %d second fork \n", get_time(p), (p->id + 1));
+		printmsg("%ld ms take the %d second fork \n", get_time(p),
+			(p->id + 1), p->print);
 		gettimeofday (&timestamp, NULL);
 		p->last_eat = (timestamp.tv_sec * 1000) + (timestamp.tv_usec / 1000);
 		ft_eat(vars, time);
 		pthread_mutex_unlock (&p->mutex[p->id]);
 		pthread_mutex_unlock (&p->mutex[(p->id + 1) % p->nthreads]);
 		ft_sleep(vars, time);
-		printmsg("%lu ms %d  is thinking\n", get_time(p), (p->id + 1));
+		printmsg("%lu ms %d  is thinking\n",
+			get_time(p), (p->id + 1), p->print);
 	}
 	return (NULL);
 }
@@ -111,7 +114,8 @@ int	ft_die(t_philosopher *tvars)
 	time = currenttime - tvars->last_eat;
 	if (time > tvars->die)
 	{
-		printmsg("%lu ms %d died",
+		pthread_mutex_lock(tvars->print);
+		printf("%lu ms %d died",
 			currenttime - tvars->begin_time, (tvars->id + 1));
 		return (1);
 	}
@@ -130,7 +134,7 @@ int	ft_sleep(t_philosopher *tvars, long timetamps)
 	time_sleep = (timesleep.tv_sec * 1000) + (timesleep.tv_usec / 1000);
 	time = 0;
 	printmsg("%lu ms %d is sleeping\n ",
-		(time_sleep - timetamps), (tvars->id + 1));
+		(time_sleep - timetamps), (tvars->id + 1), tvars->print);
 	while (time <= tvars->sleep)
 	{
 		gettimeofday (&tv, NULL);

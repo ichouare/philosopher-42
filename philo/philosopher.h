@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 12:32:27 by ichouare          #+#    #+#             */
-/*   Updated: 2023/02/26 18:05:55 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/03/01 15:48:46 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,11 @@ typedef struct philo
 	long			begin_time;
 	int				number_eat;
 	pthread_mutex_t	*mutex;
+	pthread_mutex_t	*print;
 }	t_philosopher;
 
 long	get_time(t_philosopher *tvars);
-void	printmsg(char *msg, unsigned long time, int id);
+void	printmsg(char *msg, unsigned long time, int id, pthread_mutex_t *print);
 void	ft_destory(pthread_mutex_t **mutex, int num);
 void	ft_detach(t_philosopher **vars, int num);
 int		ft_sleep(t_philosopher *tvars, long timetamps);

@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:56:14 by ichouare          #+#    #+#             */
-/*   Updated: 2023/02/26 18:02:14 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/03/01 15:09:04 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int	ft_eat(t_philosopher *tvars, long timetamps)
 	time_eat = (timeeat.tv_sec * 1000) + (timeeat.tv_usec / 1000);
 	time = 0;
 	tvars->number_eat += 1;
-	printmsg("%lu ms %d is eatingn\n ", (time_eat - timetamps), (tvars->id + 1));
+	printmsg("%lu ms %d is eatingn\n ", (time_eat - timetamps),
+		(tvars->id + 1), tvars->print);
 	while (time <= tvars->eat)
 	{
 		gettimeofday (&tv, NULL);
@@ -58,12 +59,14 @@ t_philosopher	*ft_init(int ag, char **av, int n, pthread_mutex_t **mutex)
 	t_philosopher	*vars;
 	struct timeval	tms;
 	int				i;
+	pthread_mutex_t	*print_mutex;
 
 	i = 0;
 	vars = malloc (sizeof(t_philosopher) * n);
 	if (vars == NULL)
 		return (0);
 	gettimeofday (&tms, NULL);
+	print_mutex = create_mutex(1);
 	while (i < n)
 	{
 		vars[i].begin_time = (tms.tv_sec * 1000) + (tms.tv_usec / 1000);
@@ -74,6 +77,7 @@ t_philosopher	*ft_init(int ag, char **av, int n, pthread_mutex_t **mutex)
 		vars[i].eat = ft_atoi(av[3]);
 		vars[i].sleep = ft_atoi(av[4]);
 		vars[i].number_eat = 0;
+		vars[i].print = print_mutex;
 		if (ag == 6)
 			vars[i].count_eat = ft_atoi(av[5]);
 		vars[i].mutex = *mutex;

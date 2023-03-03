@@ -6,15 +6,17 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 17:06:03 by ichouare          #+#    #+#             */
-/*   Updated: 2023/02/25 17:25:44 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/03/01 13:40:25 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-void	printmsg(char *msg, unsigned long time, int id)
+void	printmsg(char *msg, unsigned long time, int id, pthread_mutex_t *print)
 {
+	pthread_mutex_lock(print);
 	printf(msg, time, id);
+	pthread_mutex_unlock(print);
 }
 
 long	get_time(t_philosopher *tvars)

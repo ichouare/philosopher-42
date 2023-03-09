@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:54:04 by ichouare          #+#    #+#             */
-/*   Updated: 2023/03/01 15:07:58 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/03/09 21:36:00 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,34 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
+int	more_check(char **argv, int *i)
+{
+	int	j;
+
+	j = 0;
+	if (argv[*i][j] == '+' || (argv[*i][j] >= '0' && argv[*i][j] <= '9'))
+	{
+		j++;
+		while (argv[*i][j])
+		{
+			if (argv[*i][j] >= '0' && argv[*i][j] <= '9')
+				j++;
+			else
+				return (0);
+		}
+	}
+	else
+		return (0);
+	*i = *i + 1;
+	return (1);
+}
+
 int	ft_checkparms(int argc, char **argv)
 {
 	int	i;
 	int	j;
 
 	i = 1;
-	j = 0;
 	if (argc < 5 || argc > 6)
 		return (0);
 	while (i < argc)
@@ -43,26 +64,24 @@ int	ft_checkparms(int argc, char **argv)
 			else
 				return (0);
 		}
-		else
-		{
-			j = 0;
-			if (argv[i][j] == '+' || (argv[i][j] >= '0' && argv[i][j] <= '9'))
-			{
-				j++;
-				while (argv[i][j])
-				{
-					if (argv[i][j] >= '0' && argv[i][j] <= '9')
-						j++;
-					else
-						return (0);
-				}
-			}
-			else
-				return (0);
-			i++;
-		}
+		return (more_check(argv, &i));
 	}
 	return (1);
+}
+
+void	ft_decal(int id)
+{
+	int	j;
+
+	j = 0;
+	if (id % 2)
+	{
+		while (j < 500)
+		{
+			usleep (1);
+			j++;
+		}
+	}
 }
 
 void	*test(void *vars)
@@ -70,19 +89,10 @@ void	*test(void *vars)
 	t_philosopher	*p;
 	struct timeval	timestamp;
 	long			time;
-	int				j;
 
 	p = (t_philosopher *)vars;
 	time = p->begin_time;
-	if (p->id % 2)
-	{
-		j = 0;
-		while (j < 100)
-		{
-			usleep (1);
-			j++;
-		}
-	}
+	ft_decal(p->id);
 	while (1)
 	{
 		pthread_mutex_lock (&p->mutex[p->id]);

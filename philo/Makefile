@@ -6,11 +6,11 @@
 #    By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/25 14:47:33 by ichouare          #+#    #+#              #
-#    Updated: 2023/02/25 17:10:37 by ichouare         ###   ########.fr        #
+#    Updated: 2023/03/09 21:55:51 by ichouare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = thread
+NAME = philo
 
 CC = cc 
 

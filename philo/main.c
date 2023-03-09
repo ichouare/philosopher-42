@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:56:14 by ichouare          #+#    #+#             */
-/*   Updated: 2023/03/01 15:09:04 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/03/09 21:55:16 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,29 @@ int	ft_eat(t_philosopher *tvars, long timetamps)
 	return (0);
 }
 
+void	dead(t_philosopher *vars, char **argv, int argc)
+{
+	int	i;
+	int	j;
+
+	while (1)
+	{
+		i = 0;
+		j = 0;
+		while (i < ft_atoi(argv[1]))
+		{
+			if (argc == 6)
+				if (vars[i].number_eat >= vars[i].count_eat)
+					j++;
+			if (ft_die(&vars[i]) == 1)
+				return ;
+			i++;
+			if (j == (ft_atoi(argv[1])))
+				return ;
+		}
+	}
+}
+
 pthread_mutex_t	*create_mutex(int num)
 {
 	pthread_mutex_t	*mutex;
@@ -54,6 +77,16 @@ pthread_mutex_t	*create_mutex(int num)
 	return (mutex);
 }
 
+t_philosopher	*t_allocate_thread(int n)
+{
+	t_philosopher	*vars;
+
+	vars = malloc (sizeof(t_philosopher) * n);
+	if (vars == NULL)
+		return (0);
+	return (vars);
+}
+
 t_philosopher	*ft_init(int ag, char **av, int n, pthread_mutex_t **mutex)
 {
 	t_philosopher	*vars;
@@ -62,9 +95,7 @@ t_philosopher	*ft_init(int ag, char **av, int n, pthread_mutex_t **mutex)
 	pthread_mutex_t	*print_mutex;
 
 	i = 0;
-	vars = malloc (sizeof(t_philosopher) * n);
-	if (vars == NULL)
-		return (0);
+	vars = t_allocate_thread(n);
 	gettimeofday (&tms, NULL);
 	print_mutex = create_mutex(1);
 	while (i < n)
@@ -80,8 +111,7 @@ t_philosopher	*ft_init(int ag, char **av, int n, pthread_mutex_t **mutex)
 		vars[i].print = print_mutex;
 		if (ag == 6)
 			vars[i].count_eat = ft_atoi(av[5]);
-		vars[i].mutex = *mutex;
-		i++;
+		vars[i++].mutex = *mutex;
 	}
 	return (vars);
 }
@@ -91,7 +121,6 @@ int	main(int argc, char **argv)
 	t_philosopher	*vars;
 	pthread_mutex_t	*mutex;
 	int				i;
-	int				j;
 
 	if (ft_checkparms(argc, argv) == 0)
 		return (0);
@@ -105,21 +134,6 @@ int	main(int argc, char **argv)
 		i++;
 	}
 	ft_detach(&vars, ft_atoi(argv[1]));
-	while (1)
-	{
-		i = 0;
-		j = 0;
-		while (i < ft_atoi(argv[1]))
-		{
-			if (argc == 6)
-				if (vars[i].number_eat >= vars[i].count_eat)
-					j++;
-			if (ft_die(&vars[i]) == 1)
-				return (0);
-			i++;
-			if (j == (ft_atoi(argv[1])))
-				return (0);
-		}
-	}
+	dead(vars, argv, argc);
 	ft_destory(&mutex, ft_atoi(argv[1]));
 }

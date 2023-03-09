@@ -6,11 +6,11 @@
 #    By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/25 11:53:12 by ichouare          #+#    #+#              #
-#    Updated: 2023/02/25 17:10:35 by ichouare         ###   ########.fr        #
+#    Updated: 2023/03/09 21:56:34 by ichouare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = Process
+NAME = philo_bonus
 
 CC = cc 
 
@@ -27,7 +27,6 @@ OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
 
-Bonus :  $(NAMEB)
 
 $(NAME): $(OBJS) 
 	$(CC) $(FLAG)  $^ -o $@

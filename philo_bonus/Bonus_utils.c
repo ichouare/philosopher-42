@@ -6,55 +6,67 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 14:40:13 by ichouare          #+#    #+#             */
-/*   Updated: 2023/02/23 17:01:22 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/03/17 16:19:34 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philoBonus.h"
 
-// int ft_strlen(char *str)
-// {
-//     int i = 0;
-//     while(str[i])
-//     {
-//         i++;
-//     }
-//     return (i);
-// }
-int ft_checkparms(int argc, char **argv)
+int	more_check(char **argv, int *i)
 {
-    int i = 1;
-    int j = 0;
-    if(argc < 5 || argc > 6)
-        return (0);
-    while(i < argc)
-    {
-        j = 0;
-        if(ft_strlen(argv[i]) == 1)
-        {
-            if(argv[i][j] >= '0' && argv[i][j] <= '9')
-               i++;
-            else
-                return (0);
-        }
-        else
-        {
-            j = 0;
-            if(argv[i][j] == '+' || (argv[i][j] >= '0' && argv[i][j] <= '9'))
-            {
-                j++;
-                while(argv[i][j])
-                {
-                    if(argv[i][j] >= '0' && argv[i][j]<= '9')
-                        j++;
-                    else
-                        return (0);
-                }
-            }
-            else
-                return (0);
-          i++;
-        }
-    }
-    return(1);
+	int	j;
+
+	j = 0;
+	if (argv[*i][j] == '+' || (argv[*i][j] >= '0' && argv[*i][j] <= '9'))
+	{
+		j++;
+		while (argv[*i][j])
+		{
+			if (argv[*i][j] >= '0' && argv[*i][j] <= '9')
+				j++;
+			else
+				return (0);
+		}
+	}
+	else
+		return (0);
+	*i = *i + 1;
+	return (1);
+}
+
+int	ft_checkparms(int argc, char **argv)
+{
+	int	i;
+	int	j;
+
+	j = 0;
+	i = 1;
+	if (argc < 5 || argc > 6)
+		return (0);
+	while (i < argc)
+	{
+		j = 0;
+		if (ft_strlen(argv[i]) == 1)
+		{
+			if (argv[i][j] >= '0' && argv[i][j] <= '9')
+				i++;
+			else
+				return (0);
+		}
+		return (more_check(argv, &i));
+	}
+	return (1);
+}
+
+void	intialise(t_philo *philos, int argc, char **argv, int i)
+{
+	philos[i].id = i + 1;
+	philos[i].time_die = ft_atoi(argv[2]);
+	philos[i].time_eat = ft_atoi(argv[3]);
+	philos[i].time_sleep = ft_atoi(argv[4]);
+	philos[i].number_eat = 0;
+	philos[i].count_eat = -1;
+	if (argc == 6)
+		philos[i].count_eat = ft_atoi(argv[5]);
+	return ;
 }

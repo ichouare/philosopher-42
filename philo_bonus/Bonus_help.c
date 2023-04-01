@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 20:25:59 by ichouare          #+#    #+#             */
-/*   Updated: 2023/03/17 18:09:30 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/01 18:25:58 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,9 @@ void	test(void *data)
 	time = 0;
 	gettimeofday (&tv, NULL);
 	currentime = ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
-	time = currentime - p->last_eat;
+	sem_wait(p->eat);
+	//time = currentime - p->last_eat;
+	sem_post(p->eat);
 	if (p->count_eat != -1)
 	{
 		if (time > p->time_die || p->number_eat >= p->count_eat + 1)
@@ -74,15 +76,17 @@ void	ft_eat(t_philo *tvars, sem_t **sem)
 	time = 0;
 	gettimeofday (&tv, NULL);
 	time_eat = ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
-	printmsg(sem, "%lu ms %d is eatingn\n", get_time(tvars), tvars->id);
+	printmsg(sem, "%ld ms %d is eating\n", get_time(tvars), tvars->id);
 	tvars->number_eat += 1;
 	gettimeofday (&tv, NULL);
+	sem_wait(tvars->eat);
 	tvars->last_eat = ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+	sem_post(tvars->eat);
 	while (time <= tvars->time_eat)
 	{
 		gettimeofday (&tv, NULL);
 		ntime = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
-		usleep (1000);
+		usleep (500);
 		time = ntime - time_eat;
 	}
 }

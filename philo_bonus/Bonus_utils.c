@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 14:40:13 by ichouare          #+#    #+#             */
-/*   Updated: 2023/03/17 16:19:34 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/01 18:18:37 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,9 @@ int	ft_checkparms(int argc, char **argv)
 			else
 				return (0);
 		}
-		return (more_check(argv, &i));
+		else
+			if (more_check(argv, &i) == 0)
+				return (0);
 	}
 	return (1);
 }
@@ -66,7 +68,23 @@ void	intialise(t_philo *philos, int argc, char **argv, int i)
 	philos[i].time_sleep = ft_atoi(argv[4]);
 	philos[i].number_eat = 0;
 	philos[i].count_eat = -1;
+	philos[i].eat = sem_open("eat", O_CREAT , 0644 , 1);
 	if (argc == 6)
 		philos[i].count_eat = ft_atoi(argv[5]);
 	return ;
+}
+
+void	ft_decal(int id)
+{
+	int	j;
+
+	j = 0;
+	if (id % 2)
+	{
+		while (j < 500)
+		{
+			usleep (1);
+			j++;
+		}
+	}
 }

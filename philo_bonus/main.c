@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 14:33:44 by ichouare          #+#    #+#             */
-/*   Updated: 2023/03/17 17:38:55 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/01 18:24:23 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	ft_sleep(t_philo *tvars, sem_t **sem)
 	{
 		gettimeofday (&tv, NULL);
 		ntime = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
-		usleep (1000);
+		usleep (500);
 		time = ntime - time_sleep;
 	}
 }
@@ -90,8 +90,6 @@ void	ft_child(char **argv, t_philo *philos)
 		philos[i].last_eat = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
 		if (philos[i].pid == 0)
 		{
-			if (i % 2)
-				usleep (1000);
 			pthread_create (&philos[i].thread, NULL,
 				(void *)ft_route, &philos[i]);
 			while (1)
@@ -112,6 +110,7 @@ int	main(int argc, char **argv)
 		return (0);
 	sem_unlink ("fork");
 	sem_unlink ("fprint");
+	sem_unlink ("eat");
 	philos = ft_init(argc, argv);
 	ft_child(argv, philos);
 	waitpid (-1, NULL, 0);

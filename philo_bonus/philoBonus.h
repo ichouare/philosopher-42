@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 14:33:14 by ichouare          #+#    #+#             */
-/*   Updated: 2023/03/17 17:25:37 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/01 17:41:51 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct philoProcess
 	long		begin_time;
 	sem_t		*semaphore;
 	sem_t		*sem;
+	sem_t		*eat;
 	int			number_eat;
 }	t_philo;
 
@@ -49,4 +50,5 @@ int			ft_atoi(const char *nptr);
 char		*ft_itoa(int n);
 char		*ft_strjoin(char const *s1, char const *s2);
 int			ft_checkparms(int argc, char **argv);
+void		ft_decal(int id);
 #endif

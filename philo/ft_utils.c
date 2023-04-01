@@ -6,23 +6,11 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:54:04 by ichouare          #+#    #+#             */
-/*   Updated: 2023/03/09 21:36:00 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/01 17:24:11 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
-
-int	ft_strlen(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		i++;
-	}
-	return (i);
-}
 
 int	more_check(char **argv, int *i)
 {
@@ -64,24 +52,10 @@ int	ft_checkparms(int argc, char **argv)
 			else
 				return (0);
 		}
-		return (more_check(argv, &i));
+		else
+			if (more_check(argv, &i) == 0) return (0);
 	}
 	return (1);
-}
-
-void	ft_decal(int id)
-{
-	int	j;
-
-	j = 0;
-	if (id % 2)
-	{
-		while (j < 500)
-		{
-			usleep (1);
-			j++;
-		}
-	}
 }
 
 void	*test(void *vars)
@@ -102,12 +76,14 @@ void	*test(void *vars)
 		printmsg("%ld ms take the %d second fork \n", get_time(p),
 			(p->id + 1), p->print);
 		gettimeofday (&timestamp, NULL);
+		pthread_mutex_lock(p->time);
 		p->last_eat = (timestamp.tv_sec * 1000) + (timestamp.tv_usec / 1000);
+		pthread_mutex_unlock(p->time);
 		ft_eat(vars, time);
 		pthread_mutex_unlock (&p->mutex[p->id]);
 		pthread_mutex_unlock (&p->mutex[(p->id + 1) % p->nthreads]);
 		ft_sleep(vars, time);
-		printmsg("%lu ms %d  is thinking\n",
+		printmsg("%ld ms %d  is thinking\n",
 			get_time(p), (p->id + 1), p->print);
 	}
 	return (NULL);
@@ -121,7 +97,9 @@ int	ft_die(t_philosopher *tvars)
 
 	gettimeofday (&tv, NULL);
 	currenttime = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+	pthread_mutex_lock(tvars->time);
 	time = currenttime - tvars->last_eat;
+	pthread_mutex_unlock(tvars->time);
 	if (time > tvars->die)
 	{
 		pthread_mutex_lock(tvars->print);
@@ -143,13 +121,13 @@ int	ft_sleep(t_philosopher *tvars, long timetamps)
 	gettimeofday(&timesleep, NULL);
 	time_sleep = (timesleep.tv_sec * 1000) + (timesleep.tv_usec / 1000);
 	time = 0;
-	printmsg("%lu ms %d is sleeping\n ",
+	printmsg("%ld ms %d is sleeping\n ",
 		(time_sleep - timetamps), (tvars->id + 1), tvars->print);
 	while (time <= tvars->sleep)
 	{
 		gettimeofday (&tv, NULL);
 		ntime = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
-		usleep (100);
+		usleep (500);
 		time = (ntime - time_sleep);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:56:14 by ichouare          #+#    #+#             */
-/*   Updated: 2023/03/09 21:55:16 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/01 17:13:30 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,39 +24,16 @@ int	ft_eat(t_philosopher *tvars, long timetamps)
 	time_eat = (timeeat.tv_sec * 1000) + (timeeat.tv_usec / 1000);
 	time = 0;
 	tvars->number_eat += 1;
-	printmsg("%lu ms %d is eatingn\n ", (time_eat - timetamps),
+	printmsg("%ld ms %d is eating\n ", (time_eat - timetamps),
 		(tvars->id + 1), tvars->print);
 	while (time <= tvars->eat)
 	{
 		gettimeofday (&tv, NULL);
 		ntime = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
-		usleep (100);
+		usleep (500);
 		time = (ntime - time_eat);
 	}
 	return (0);
-}
-
-void	dead(t_philosopher *vars, char **argv, int argc)
-{
-	int	i;
-	int	j;
-
-	while (1)
-	{
-		i = 0;
-		j = 0;
-		while (i < ft_atoi(argv[1]))
-		{
-			if (argc == 6)
-				if (vars[i].number_eat >= vars[i].count_eat)
-					j++;
-			if (ft_die(&vars[i]) == 1)
-				return ;
-			i++;
-			if (j == (ft_atoi(argv[1])))
-				return ;
-		}
-	}
 }
 
 pthread_mutex_t	*create_mutex(int num)
@@ -76,16 +53,34 @@ pthread_mutex_t	*create_mutex(int num)
 	}
 	return (mutex);
 }
-
-t_philosopher	*t_allocate_thread(int n)
+void	dead(t_philosopher *vars, char **argv, int argc)
 {
-	t_philosopher	*vars;
+	int	i;
+	int	j;
+	pthread_mutex_t	*dead_mutex;
 
-	vars = malloc (sizeof(t_philosopher) * n);
-	if (vars == NULL)
-		return (0);
-	return (vars);
+	dead_mutex = create_mutex(1);
+	while (1)
+	{
+		
+		i = 0;
+		j = 0;
+		if (vars->id)
+			sleep (100);
+		while (i < ft_atoi(argv[1]))
+		{
+			if (argc == 6)
+				if (vars[i].number_eat >= vars[i].count_eat)
+					j++;
+			if (ft_die(&vars[i]) == 1)
+				return ;
+			i++;
+			if (j == (ft_atoi(argv[1])))
+				return ;
+		}
+	}
 }
+
 
 t_philosopher	*ft_init(int ag, char **av, int n, pthread_mutex_t **mutex)
 {
@@ -109,6 +104,7 @@ t_philosopher	*ft_init(int ag, char **av, int n, pthread_mutex_t **mutex)
 		vars[i].sleep = ft_atoi(av[4]);
 		vars[i].number_eat = 0;
 		vars[i].print = print_mutex;
+		vars[i].time = create_mutex(1);
 		if (ag == 6)
 			vars[i].count_eat = ft_atoi(av[5]);
 		vars[i++].mutex = *mutex;

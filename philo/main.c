@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:56:14 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/01 17:13:30 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/03 18:24:16 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,16 @@ pthread_mutex_t	*create_mutex(int num)
 	}
 	return (mutex);
 }
+
 void	dead(t_philosopher *vars, char **argv, int argc)
 {
-	int	i;
-	int	j;
+	int				i;
+	int				j;
 	pthread_mutex_t	*dead_mutex;
 
 	dead_mutex = create_mutex(1);
 	while (1)
 	{
-		
 		i = 0;
 		j = 0;
 		if (vars->id)
@@ -80,7 +80,6 @@ void	dead(t_philosopher *vars, char **argv, int argc)
 		}
 	}
 }
-
 
 t_philosopher	*ft_init(int ag, char **av, int n, pthread_mutex_t **mutex)
 {

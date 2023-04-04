@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 14:33:44 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/01 18:24:23 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/04 13:29:47 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,12 @@ t_philo	*ft_init(int argc, char **argv)
 	i = 0;
 	gettimeofday (&tv, NULL);
 	philos = malloc (sizeof(t_philo) * ft_atoi(argv[1]));
+	if (!philos)
+		exit (0);
 	semaphore = sem_open ("fork", O_CREAT, 0644, ft_atoi(argv[1]));
 	sem = sem_open ("fprint", O_CREAT, 0644, 1);
+	if (sem == SEM_FAILED || semaphore == SEM_FAILED)
+		exit (0);
 	while (i < ft_atoi(argv[1]))
 	{
 		philos[i].semaphore = semaphore;
@@ -86,12 +90,15 @@ void	ft_child(char **argv, t_philo *philos)
 	while (i < ft_atoi(argv[1]))
 	{
 		philos[i].pid = fork();
+		if (philos[i].pid == -1)
+			exit (0);
 		gettimeofday (&tv, NULL);
 		philos[i].last_eat = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
 		if (philos[i].pid == 0)
 		{
-			pthread_create (&philos[i].thread, NULL,
-				(void *)ft_route, &philos[i]);
+			if (pthread_create (&philos[i].thread, NULL,
+					(void *)ft_route, &philos[i]) != 0)
+				exit (0);
 			while (1)
 				test(&philos[i]);
 		}
@@ -110,7 +117,6 @@ int	main(int argc, char **argv)
 		return (0);
 	sem_unlink ("fork");
 	sem_unlink ("fprint");
-	sem_unlink ("eat");
 	philos = ft_init(argc, argv);
 	ft_child(argv, philos);
 	waitpid (-1, NULL, 0);

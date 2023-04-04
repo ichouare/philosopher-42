@@ -6,13 +6,12 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 14:27:10 by ichouare          #+#    #+#             */
-/*   Updated: 2023/03/11 20:57:44 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/04 12:26:58 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./philoBonus.h"
 
-// lenght of number
 static int	len_int(int n)
 {
 	int	i;
@@ -71,4 +70,11 @@ char	*ft_itoa(int n)
 		return (NULL);
 	handlertable(arr, n, i);
 	return (arr);
+}
+
+void	ft_test_die(long time, long curentime, t_philo *p)
+{
+	if (time > p->time_die)
+		test_die(p, curentime - p->begin_time);
+	return ;
 }

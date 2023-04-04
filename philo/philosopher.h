@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 12:32:27 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/01 17:12:30 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/04 12:00:15 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void			ft_decal(int id);
 t_philosopher	*t_allocate_thread(int n);
 void			printmsg(char *msg, unsigned long time, int id,
 					pthread_mutex_t *print);
-void			ft_destory(pthread_mutex_t **mutex, int num);
+int				ft_destory(pthread_mutex_t **mutex, int num);
 void			ft_detach(t_philosopher **vars, int num);
 int				ft_sleep(t_philosopher *tvars, long timetamps);
 int				ft_eat(t_philosopher *tvars, long timetamps);
@@ -53,5 +53,8 @@ int				ft_atoi(const char *nptr);
 void			*test(void *vars);
 int				ft_die(t_philosopher *tvars);
 void			ft_usleep(int num);
+void			ft_clock(t_philosopher	*p);
+void			init_thread(t_philosopher *vars, char **av, int ag);
+int				destory_mutex(t_philosopher **vars, int num);
 
 #endif

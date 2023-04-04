@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 20:25:59 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/01 18:25:58 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/03 18:16:39 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	test(void *data)
 	gettimeofday (&tv, NULL);
 	currentime = ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 	sem_wait(p->eat);
-	//time = currentime - p->last_eat;
+	time = currentime - p->last_eat;
 	sem_post(p->eat);
 	if (p->count_eat != -1)
 	{
@@ -62,9 +62,8 @@ void	test(void *data)
 		}
 	}
 	else
-		if (time > p->time_die)
-			test_die(p, currentime - p->begin_time);
-}
+		ft_test_die(time, currentime, p);
+}	
 
 void	ft_eat(t_philo *tvars, sem_t **sem)
 {

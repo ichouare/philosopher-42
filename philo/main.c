@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:56:14 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/03 18:24:16 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/04 12:17:44 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,6 @@ void	dead(t_philosopher *vars, char **argv, int argc)
 	{
 		i = 0;
 		j = 0;
-		if (vars->id)
-			sleep (100);
 		while (i < ft_atoi(argv[1]))
 		{
 			if (argc == 6)
@@ -92,20 +90,18 @@ t_philosopher	*ft_init(int ag, char **av, int n, pthread_mutex_t **mutex)
 	vars = t_allocate_thread(n);
 	gettimeofday (&tms, NULL);
 	print_mutex = create_mutex(1);
+	if (print_mutex == 0)
+		return (0);
 	while (i < n)
 	{
 		vars[i].begin_time = (tms.tv_sec * 1000) + (tms.tv_usec / 1000);
 		vars[i].last_eat = vars[i].begin_time;
 		vars[i].id = i;
-		vars[i].nthreads = ft_atoi(av[1]);
-		vars[i].die = ft_atoi(av[2]);
-		vars[i].eat = ft_atoi(av[3]);
-		vars[i].sleep = ft_atoi(av[4]);
-		vars[i].number_eat = 0;
+		init_thread(&vars[i], av, ag);
 		vars[i].print = print_mutex;
 		vars[i].time = create_mutex(1);
-		if (ag == 6)
-			vars[i].count_eat = ft_atoi(av[5]);
+		if (vars[i].time == 0)
+			return (0);
 		vars[i++].mutex = *mutex;
 	}
 	return (vars);
@@ -120,7 +116,11 @@ int	main(int argc, char **argv)
 	if (ft_checkparms(argc, argv) == 0)
 		return (0);
 	mutex = create_mutex(ft_atoi(argv[1]));
+	if (mutex == 0)
+		return (0);
 	vars = ft_init(argc, argv, ft_atoi(argv[1]), &mutex);
+	if (vars == 0)
+		return (0);
 	i = 0;
 	while (i < ft_atoi(argv[1]))
 	{
@@ -130,5 +130,8 @@ int	main(int argc, char **argv)
 	}
 	ft_detach(&vars, ft_atoi(argv[1]));
 	dead(vars, argv, argc);
-	ft_destory(&mutex, ft_atoi(argv[1]));
+	if (ft_destory(&mutex, ft_atoi(argv[1]) == 0))
+		return (0);
+	if (destory_mutex(&vars, ft_atoi(argv[1]) == 0))
+		return (0);
 }

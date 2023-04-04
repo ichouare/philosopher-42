@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 17:06:03 by ichouare          #+#    #+#             */
-/*   Updated: 2023/03/01 13:40:25 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/04 11:58:16 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ long	get_time(t_philosopher *tvars)
 	return (time);
 }
 
-void	ft_destory(pthread_mutex_t **mutex, int num)
+int	ft_destory(pthread_mutex_t **mutex, int num)
 {
 	int	i;
 
@@ -37,9 +37,10 @@ void	ft_destory(pthread_mutex_t **mutex, int num)
 	while (i < num)
 	{
 		if (pthread_mutex_destroy(mutex[i]) != 0)
-			return ;
+			return (0);
 		i++;
 	}
+	return (1);
 }
 
 void	ft_detach(t_philosopher **vars, int num)

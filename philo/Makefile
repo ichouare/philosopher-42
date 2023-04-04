@@ -6,7 +6,7 @@
 #    By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/25 14:47:33 by ichouare          #+#    #+#              #
-#    Updated: 2023/03/11 20:44:32 by ichouare         ###   ########.fr        #
+#    Updated: 2023/04/04 11:53:50 by ichouare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ FLAG = -Wall -Wextra  -Werror
 HEADER = ./philosopher.h
 
 
-SRCS =   main.c ft_atoi.c   ft_utils.c ft_utils_1.c ft_utils_2.c\
+SRCS =   main.c ft_atoi.c   ft_utils.c ft_utils_1.c ft_utils_2.c ft_utils_3.c\
 
 
 OBJS = $(SRCS:.c=.o)

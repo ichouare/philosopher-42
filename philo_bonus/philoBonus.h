@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 14:33:14 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/01 17:41:51 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/04 11:08:36 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,6 @@ char		*ft_itoa(int n);
 char		*ft_strjoin(char const *s1, char const *s2);
 int			ft_checkparms(int argc, char **argv);
 void		ft_decal(int id);
+void		ft_test_die(long time, long curentime, t_philo *p);
+void		test_die(t_philo *p, long time);
 #endif

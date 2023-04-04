@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:54:04 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/03 18:27:42 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/04 12:11:21 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,6 @@ int	ft_checkparms(int argc, char **argv)
 	return (1);
 }
 
-void ft_clock(t_philosopher	*p)
-{
-	struct timeval	timestamp;
-	
-	pthread_mutex_lock(p->time);
-	p->last_eat = (timestamp.tv_sec * 1000) + (timestamp.tv_usec / 1000);
-	pthread_mutex_unlock(p->time);
-}
 void	*test(void *vars)
 {
 	t_philosopher	*p;
@@ -86,9 +78,6 @@ void	*test(void *vars)
 			(p->id + 1), p->print);
 		gettimeofday (&timestamp, NULL);
 		ft_clock(p);
-		// pthread_mutex_lock(p->time);
-		// p->last_eat = (timestamp.tv_sec * 1000) + (timestamp.tv_usec / 1000);
-		// pthread_mutex_unlock(p->time);
 		ft_eat(vars, time);
 		pthread_mutex_unlock (&p->mutex[p->id]);
 		pthread_mutex_unlock (&p->mutex[(p->id + 1) % p->nthreads]);

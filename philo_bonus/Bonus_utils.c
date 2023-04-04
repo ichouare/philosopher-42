@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 14:40:13 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/01 18:18:37 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/04 13:29:17 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,16 @@ int	ft_checkparms(int argc, char **argv)
 
 void	intialise(t_philo *philos, int argc, char **argv, int i)
 {
+	sem_unlink (ft_itoa(i));
 	philos[i].id = i + 1;
 	philos[i].time_die = ft_atoi(argv[2]);
 	philos[i].time_eat = ft_atoi(argv[3]);
 	philos[i].time_sleep = ft_atoi(argv[4]);
 	philos[i].number_eat = 0;
 	philos[i].count_eat = -1;
-	philos[i].eat = sem_open("eat", O_CREAT , 0644 , 1);
+	philos[i].eat = sem_open (ft_itoa(i), O_CREAT, 0644, 1);
+	if (philos[i].eat == SEM_FAILED)
+		exit (0);
 	if (argc == 6)
 		philos[i].count_eat = ft_atoi(argv[5]);
 	return ;

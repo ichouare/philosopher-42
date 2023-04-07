@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:56:14 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/04 12:17:44 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/07 18:35:24 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	ft_eat(t_philosopher *tvars, long timetamps)
 	time_eat = (timeeat.tv_sec * 1000) + (timeeat.tv_usec / 1000);
 	time = 0;
 	tvars->number_eat += 1;
-	printmsg("%ld ms %d is eating\n ", (time_eat - timetamps),
+	printmsg("%ld ms %d is eating\n", (time_eat - timetamps),
 		(tvars->id + 1), tvars->print);
 	while (time <= tvars->eat)
 	{

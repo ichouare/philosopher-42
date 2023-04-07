@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:54:04 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/04 12:11:21 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/07 18:39:54 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ int	ft_checkparms(int argc, char **argv)
 void	*test(void *vars)
 {
 	t_philosopher	*p;
-	struct timeval	timestamp;
 	long			time;
 
 	p = (t_philosopher *)vars;
@@ -71,18 +70,17 @@ void	*test(void *vars)
 	while (1)
 	{
 		pthread_mutex_lock (&p->mutex[p->id]);
-		printmsg("%ld ms take the %d first fork \n", get_time(p),
+		printmsg("%ld ms %d has taken a fork\n", get_time(p),
 			(p->id + 1), p->print);
 		pthread_mutex_lock (&p->mutex[(p->id + 1) % p->nthreads]);
-		printmsg("%ld ms take the %d second fork \n", get_time(p),
+		printmsg("%ld ms %d has taken a fork\n", get_time(p),
 			(p->id + 1), p->print);
-		gettimeofday (&timestamp, NULL);
 		ft_clock(p);
 		ft_eat(vars, time);
 		pthread_mutex_unlock (&p->mutex[p->id]);
 		pthread_mutex_unlock (&p->mutex[(p->id + 1) % p->nthreads]);
 		ft_sleep(vars, time);
-		printmsg("%ld ms %d  is thinking\n",
+		printmsg("%ld ms %d is thinking\n",
 			get_time(p), (p->id + 1), p->print);
 	}
 	return (NULL);
@@ -120,7 +118,7 @@ int	ft_sleep(t_philosopher *tvars, long timetamps)
 	gettimeofday(&timesleep, NULL);
 	time_sleep = (timesleep.tv_sec * 1000) + (timesleep.tv_usec / 1000);
 	time = 0;
-	printmsg("%ld ms %d is sleeping\n ",
+	printmsg("%ld ms %d is sleeping\n",
 		(time_sleep - timetamps), (tvars->id + 1), tvars->print);
 	while (time <= tvars->sleep)
 	{

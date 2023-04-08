@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 14:40:13 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/04 13:29:17 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/08 15:08:19 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	ft_decal(int id)
 	j = 0;
 	if (id % 2)
 	{
-		while (j < 500)
+		while (j < 1000)
 		{
 			usleep (1);
 			j++;

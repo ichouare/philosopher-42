@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:56:14 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/07 18:35:24 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/08 16:38:40 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,21 @@ int	ft_eat(t_philosopher *tvars, long timetamps)
 {
 	struct timeval	tv;
 	struct timeval	timeeat;
-	long			time;
 	long			ntime;
 	long			time_eat;
 
 	gettimeofday (&timeeat, NULL);
 	time_eat = (timeeat.tv_sec * 1000) + (timeeat.tv_usec / 1000);
-	time = 0;
+	ntime = 0;
 	tvars->number_eat += 1;
 	printmsg("%ld ms %d is eating\n", (time_eat - timetamps),
 		(tvars->id + 1), tvars->print);
-	while (time <= tvars->eat)
+	ft_clock(tvars);
+	while (ntime - time_eat <= tvars->eat)
 	{
+		usleep (900);
 		gettimeofday (&tv, NULL);
 		ntime = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
-		usleep (500);
-		time = (ntime - time_eat);
 	}
 	return (0);
 }

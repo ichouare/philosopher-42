@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:54:04 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/07 18:39:54 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/08 17:44:58 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ void	*test(void *vars)
 		pthread_mutex_lock (&p->mutex[(p->id + 1) % p->nthreads]);
 		printmsg("%ld ms %d has taken a fork\n", get_time(p),
 			(p->id + 1), p->print);
-		ft_clock(p);
 		ft_eat(vars, time);
 		pthread_mutex_unlock (&p->mutex[p->id]);
 		pthread_mutex_unlock (&p->mutex[(p->id + 1) % p->nthreads]);
@@ -111,21 +110,19 @@ int	ft_sleep(t_philosopher *tvars, long timetamps)
 {
 	struct timeval	tv;
 	struct timeval	timesleep;
-	long			time;
 	long			ntime;
 	long			time_sleep;
 
 	gettimeofday(&timesleep, NULL);
 	time_sleep = (timesleep.tv_sec * 1000) + (timesleep.tv_usec / 1000);
-	time = 0;
+	ntime = 0;
 	printmsg("%ld ms %d is sleeping\n",
 		(time_sleep - timetamps), (tvars->id + 1), tvars->print);
-	while (time <= tvars->sleep)
+	while (ntime - time_sleep <= tvars->sleep)
 	{
+		usleep (1000);
 		gettimeofday (&tv, NULL);
 		ntime = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
-		usleep (500);
-		time = (ntime - time_sleep);
 	}
 	return (0);
 }

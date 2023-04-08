@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 14:33:44 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/04 13:29:47 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/08 16:44:35 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,18 @@
 void	ft_sleep(t_philo *tvars, sem_t **sem)
 {
 	struct timeval		tv;
-	long				time;
 	long				ntime;
 	long				time_sleep;
 
-	time = 0;
+	ntime = 0;
 	gettimeofday (&tv, NULL);
 	time_sleep = ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
-	printmsg(sem, "%lu ms %d is sleping\n ", get_time(tvars), tvars->id);
-	while (time <= tvars->time_sleep)
+	printmsg(sem, "%lu ms %d is sleping\n", get_time(tvars), tvars->id);
+	while (ntime - time_sleep <= tvars->time_sleep)
 	{
+		usleep (1000);
 		gettimeofday (&tv, NULL);
 		ntime = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
-		usleep (500);
-		time = ntime - time_sleep;
 	}
 }
 
@@ -37,10 +35,10 @@ void	ft_route(t_philo *philos)
 	while (1)
 	{
 		sem_wait (philos->semaphore);
-		printmsg(&philos->sem, "%ld ms take the %d first fork \n",
+		printmsg(&philos->sem, "%ld ms %d  has taken a fork\n",
 			get_time(philos), philos->id);
 		sem_wait (philos->semaphore);
-		printmsg(&philos->sem, "%ld ms take the %d second fork \n",
+		printmsg(&philos->sem, "%ld ms %d  has taken a fork\n",
 			get_time(philos), philos->id);
 		ft_eat(philos, &philos->sem);
 		sem_post (philos->semaphore);
@@ -99,10 +97,10 @@ void	ft_child(char **argv, t_philo *philos)
 			if (pthread_create (&philos[i].thread, NULL,
 					(void *)ft_route, &philos[i]) != 0)
 				exit (0);
+			pthread_detach(philos[i].thread);
 			while (1)
 				test(&philos[i]);
 		}
-		pthread_detach (philos[i].thread);
 		i++;
 	}
 }
